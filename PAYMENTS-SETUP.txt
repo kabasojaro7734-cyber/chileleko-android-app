@@ -1,0 +1,12 @@
+CHILELEKO INTERNET CAFE - MOBILE MONEY PAYMENT SETTINGS
+
+MTN Mobile Money receiving number: 0974820180
+Airtel Money receiving number: 0765601014
+
+The checkout now displays the relevant Chileleko receiving number and asks the customer to send the exact amount using their mobile money menu. Payment records are saved as PENDING and are not treated as verified automatically. Staff must confirm the transaction against the provider SMS/account statement before granting the product, document, or service.
+
+IMPORTANT:
+- These are the contact numbers supplied for the project; confirm that each SIM is registered and active for receiving the corresponding Mobile Money payments before publishing the app.
+- This is manual payment collection, not an API-integrated STK/USSD push or automatic provider confirmation.
+- Automatic payment confirmation requires approved MTN MoMo and Airtel Money merchant/collection API credentials, a secure backend, and provider callbacks/webhooks. Do not put API secrets in the Android app.
+- The project has not been compiled into an APK in this environment. Build and test it in Android Studio before distribution.

@@ -1,0 +1,24 @@
+CHILELEKO INTERNET CAFE - BUILD APK
+
+This project includes a GitHub Actions workflow at .github/workflows/build-apk.yml.
+
+To generate the installable debug APK:
+1. Create/sign in to GitHub and create a new repository.
+2. Upload the CONTENTS of this project folder (the app, gradle, settings.gradle.kts, build.gradle.kts, and .github folder) to the repository.
+3. Open the repository's Actions tab.
+4. Select 'Build CHILELEKO Android APK'.
+5. Tap 'Run workflow' (or push to main/master to trigger it automatically).
+6. Wait for the workflow to finish successfully.
+7. Open the completed workflow run and download the 'chileleko-debug-apk' artifact.
+8. Extract the downloaded artifact; install app-debug.apk on your Android phone. Allow installation from that source if Android asks.
+
+This environment does not have the Android SDK or Gradle installed, so no APK has been compiled here.
+
+PAYMENTS:
+The supplied numbers are shown as receiving/contact numbers in the app checkout:
+MTN: 0974820180
+Airtel: 0765601014
+The current flow is manual and pending staff verification. Automatic confirmation is NOT implemented.
+To implement automatic confirmation, Chileleko must obtain approved MTN MoMo and Airtel Money merchant/API access and configure a secure backend with provider callbacks/webhooks. Never put API secrets in the Android app or share them in chat. The merchant account details and API onboarding must be completed with the providers.
+
+For public Google Play release, create a private upload keystore and configure secure signing secrets; do not publish a debug-signed APK as a production release. Also replace/test AdMob test configuration and complete privacy/data-safety disclosures before launch.

@@ -1,0 +1,7 @@
+<resources>
+    <color name="primary_amber">#F59E0B</color>
+    <color name="primary_amber_light">#FBBF24</color>
+    <color name="bg_slate_dark">#020617</color>
+    <color name="surface_slate">#0F172A</color>
+    <color name="text_light">#F8FAFC</color>
+</resources>
