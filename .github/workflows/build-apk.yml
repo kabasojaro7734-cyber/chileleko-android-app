@@ -1,4 +1,3 @@
-
 name: Build CHILELEKO APK
 
 on:
@@ -29,8 +28,10 @@ jobs:
           unzip CHILELEKO-GITHUB-UPLOAD.zip -d android-project
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+  uses: android-actions/setup-android@v4
 
+- name: Accept Android SDK licenses
+  run: yes | sdkmanager --licenses
       - name: Install Android platform
         run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
 
