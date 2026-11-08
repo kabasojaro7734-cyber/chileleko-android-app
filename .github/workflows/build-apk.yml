@@ -31,28 +31,26 @@ jobs:
         run: yes | sdkmanager --licenses
 
       - name: Install Android SDK packages
-        run: |
-          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+        run: sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
-      - name: Extract Android project
+      - name: Extract project ZIP files
         run: |
-          if [ -f CHILELEKO-GITHUB-UPLOAD.zip ]; then
-            unzip -o CHILELEKO-GITHUB-UPLOAD.zip -d android-project
+          mkdir -p extracted
+          find . -maxdepth 1 -type f -iname '*.zip' -print -exec unzip -o {} -d extracted \;
+          echo "Repository files:"
+          find . -maxdepth 3 -type f | head -100
+
+      - name: Find Gradle wrapper
+        run: |
+          GRADLE_FILE=$(find . -type f -name gradlew | head -n 1)
+          if [ -z "$GRADLE_FILE" ]; then
+            echo "ERROR: No gradlew found. Android project files may be missing."
+            exit 1
           fi
-
-      - name: Locate Gradle project
-        run: |
-          echo "Searching for Android Gradle project..."
-          find . -name gradlew -type f
-          find . -name build.gradle -o -name build.gradle.kts
+          echo "GRADLE_FILE=$GRADLE_FILE" >> $GITHUB_ENV
 
       - name: Build debug APK
         run: |
-          GRADLE_FILE=$(find . -name gradlew -type f | head -n 1)
-          if [ -z "$GRADLE_FILE" ]; then
-            echo "ERROR: Gradle wrapper not found. Check uploaded project files."
-            exit 1
-          fi
           PROJECT_DIR=$(dirname "$GRADLE_FILE")
           cd "$PROJECT_DIR"
           chmod +x gradlew
@@ -62,7 +60,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: CHILELEKO-ANDROID-APK
-          path: |
-            **/build/outputs/apk/debug/*.apk
+          path: "**/build/outputs/apk/debug/*.apk"
           if-no-files-found: error
           
