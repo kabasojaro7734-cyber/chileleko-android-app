@@ -4,8 +4,7 @@ name: Build CHILELEKO APK
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
 
 permissions:
   contents: read
@@ -30,29 +29,34 @@ jobs:
       - name: Accept Android SDK licenses
         run: yes | sdkmanager --licenses
 
-      - name: Install Android SDK packages
+      - name: Install Android SDK
         run: sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
-      - name: Extract project ZIP files
+      - name: Extract Android project
         run: |
           mkdir -p extracted
-          find . -maxdepth 1 -type f -iname '*.zip' -print -exec unzip -o {} -d extracted \;
-          echo "Repository files:"
-          find . -maxdepth 3 -type f | head -100
+          ZIP_FILE=$(find . -maxdepth 2 -type f -iname '*.zip' | head -n 1)
+          if [ -z "$ZIP_FILE" ]; then
+            echo "ERROR: No ZIP file found."
+            exit 1
+          fi
+          echo "Extracting: $ZIP_FILE"
+          unzip -o "$ZIP_FILE" -d extracted
 
       - name: Find Gradle wrapper
         run: |
+          echo "Searching for gradlew..."
+          find . -type f -name gradlew
           GRADLE_FILE=$(find . -type f -name gradlew | head -n 1)
           if [ -z "$GRADLE_FILE" ]; then
-            echo "ERROR: No gradlew found. Android project files may be missing."
+            echo "ERROR: ZIP does not contain gradlew."
             exit 1
           fi
           echo "GRADLE_FILE=$GRADLE_FILE" >> $GITHUB_ENV
 
       - name: Build debug APK
         run: |
-          PROJECT_DIR=$(dirname "$GRADLE_FILE")
-          cd "$PROJECT_DIR"
+          cd "$(dirname "$GRADLE_FILE")"
           chmod +x gradlew
           ./gradlew --no-daemon assembleDebug
 
